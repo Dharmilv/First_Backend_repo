@@ -8,3 +8,5 @@ class API_Response{
         this.success = statusCode
     }
 }
+
+export { API_Response }
