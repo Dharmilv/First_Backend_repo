@@ -35,6 +35,8 @@ const registerUser =  asynchandler( async (req, res) => {
 
     const avatarLocalPath = await req.files?.avatar[0]?.path
 
+    console.log(avatarLocalPath)
+
     const coverImageLocalPath = await req.files?.coverImage[0]?.path
 
     if(!avatarLocalPath){
@@ -42,6 +44,8 @@ const registerUser =  asynchandler( async (req, res) => {
     }
 
     const avatar = await uploadOnCloudinary(avatarLocalPath)
+
+    console.log("this is controller box => ",avatar)
    
     const coverImage = await uploadOnCloudinary(coverImageLocalPath)
 
