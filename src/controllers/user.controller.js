@@ -4,11 +4,11 @@ import { User } from "../models/User.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { API_Response } from "../utils/API_Response.js";
 
-const registerUser = asynchandler( async (req, res) => {
+const registerUser =  asynchandler( async (req, res) => {
     const {username, fullname, email, password} = req.body
     console.log(username, fullname, email, password)
 
-    if(fullname === "") { 
+    if(fullname === ""){ 
         throw new API_Error(400, "fullname is required" )
     }
     else if(email === "" ){
@@ -21,41 +21,41 @@ const registerUser = asynchandler( async (req, res) => {
         throw new API_Error(400, "password is required" )
     }
 
-    const existingEmail = User.findOne({email})
+    const existingEmail = await User.findOne({email})
     
     if(existingEmail){
         throw new API_Error(400, "this email_id already exists")
     }
 
-    const existingUsername = User.findOne({username})
+    const existingUsername = await User.findOne({username})
     
     if(existingUsername){
         throw new API_Error(400, "this username already exists")
     }
 
-    const avatarLocalPath = req.files?.avatar[0]?.path
+    const avatarLocalPath = await req.files?.avatar[0]?.path
 
-    const coverImageLocalPath = req.files?.coverImage[0]?.path
+    const coverImageLocalPath = await req.files?.coverImage[0]?.path
 
     if(!avatarLocalPath){
         throw new API_Error(400 , "Avatar is required")
     }
 
     const avatar = await uploadOnCloudinary(avatarLocalPath)
-
+   
     const coverImage = await uploadOnCloudinary(coverImageLocalPath)
 
     if(!avatar){
-        throw new API_Error(400 , "Avatar is required")
+        throw new API_Error(400 , "Avatar file is required")
     }
 
     const user = await User.create({
         fullname,
-        avatar : avatar.url,
+        avatar : avatar?.url,
         coverImage : coverImage?.url || "" ,
         email,
         password,
-        username : username.toLowercase()
+        username: username
     })
 
     const createdUser = await User.findById(user._id).select(
