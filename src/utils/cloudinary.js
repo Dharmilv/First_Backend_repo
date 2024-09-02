@@ -2,6 +2,7 @@ import { v2 as cloudinary } from "cloudinary"
 import fs from "fs"
 
 cloudinary.config({ 
+    //need to change these values to hardcoded before using 
     cloud_name : "dvdpqerzw", 
     api_key : "631532587984429", 
     api_secret : "gH5ebBFrt_4Ejj_Hz5nfPcx7VM4", 
