@@ -20,7 +20,6 @@ const generateAccessAndRefreshTokens = async (userId) => {
 const registerUser =  asynchandler( async (req, res) => {
     const {username, fullname, email, password} = req.body
     console.log(username, fullname, email, password)
-
     if(fullname === ""){ 
         throw new API_Error(400, "fullname is required" )
     }
@@ -86,8 +85,6 @@ const registerUser =  asynchandler( async (req, res) => {
     return res.status(201).json(
         new API_Response(200, createdUser, "User registered successfully")
     )
-    
-
 })
 
 const loginUser = asynchandler(async (req, res) => {
@@ -96,9 +93,9 @@ const loginUser = asynchandler(async (req, res) => {
     //give access and refreshtoken to login person
 
     const { email , password , username } = req.body
-
-    if(!email || !username){
-        throw new API_Error(400, "username or password is required")
+    console.log(email,username,password)
+    if( !(email || username) ){
+        throw new API_Error(400, "username or email is required")
     }
 
     const user = await User.findOne({
